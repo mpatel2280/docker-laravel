@@ -8,3 +8,24 @@ docker run -ti \
 docker tag docker-laravel patelm2280/docker-laravel
 
 docker push patelm2280/docker-laravel
+
+docker run  -ti \
+  -p 8084:80 \
+  -e APP_KEY=base64:24g8uFEkrqRM2V9KoaQDgRTzMIRvt4aBG7bOu+iQAdM= \
+  patelm2280/docker-laravel-www
+
+docker run -ti \
+  -p 3308:3306 \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+  -e MYSQL_RANDOM_ROOT_PASSWORD=root \
+  patelm2280/docker-laravel-mysql
+
+
+kubectl run docker-laravel-mysql-kubectl \
+  --restart=Never \
+  --image=patelm2280/docker-laravel-mysql \
+  --port=3309 \
+  --env=MYSQL_ROOT_PASSWORD=root \
+  --env=MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+  --env=MYSQL_RANDOM_ROOT_PASSWORD=root 
