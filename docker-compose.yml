@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+    # Mysql database container
+    laraveldb:
+        image: mysql
+        container_name: laravel11_db
+        restart: always
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: laravel_webapp
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD:
+            MYSQL_USER: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        ports:
+          - "3307:3306"
+        networks:
+            - laravel11
+
+    # laraveldb:
+    #     image: mariadb:10.6
+    #     container_name: laravel11_db
+    #     restart: unless-stopped
+    #     volumes:
+    #         - db-data:/var/lib/mysql
+    #     environment:
+    #         MYSQL_DATABASE: laravel_webapp
+    #         MYSQL_ROOT_PASSWORD: root
+    #         MYSQL_PASSWORD: root
+    #         MYSQL_USER: root
+    #         SERVICE_TAGS: dev
+    #         SERVICE_NAME: mysql
+    #     ports:
+    #       - "3307:3306"
+    #     networks:
+    #         - laravel11
+
+    # Laravel apache project container
+    laravelwww:
+        build: docker/php
+        container_name: laravel11_www
+        ports:
+          - "8083:80"
+        volumes:
+            - ./docker/php/vhosts:/etc/apache2/sites-enabled
+            - ./:/var/www
+        restart: always
+        networks:
+            - laravel11
+
+networks:
+    laravel11:
+
+volumes:
+    db-data:

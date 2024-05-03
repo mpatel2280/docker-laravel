@@ -1,0 +1,10 @@
+docker build -t docker-laravel .
+
+docker run -ti \
+  -p 8083:80 \
+  -e APP_KEY=base64:24g8uFEkrqRM2V9KoaQDgRTzMIRvt4aBG7bOu+iQAdM= \
+  docker-laravel
+
+docker tag docker-laravel patelm2280/docker-laravel
+
+docker push patelm2280/docker-laravel
