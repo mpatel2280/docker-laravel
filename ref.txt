@@ -9,6 +9,18 @@ docker tag docker-laravel patelm2280/docker-laravel
 
 docker push patelm2280/docker-laravel
 
+
+docker build -t laravel-kubernetes-example .
+
+docker run -ti \
+  -p 8084:80 \
+  -e APP_KEY=base64:24g8uFEkrqRM2V9KoaQDgRTzMIRvt4aBG7bOu+iQAdM= \
+  laravel-kubernetes-example
+
+docker tag docker-laravel patelm2280/laravel-kubernetes-example
+
+docker push patelm2280/laravel-kubernetes-example
+
 docker run  -ti \
   -p 8084:80 \
   -e APP_KEY=base64:24g8uFEkrqRM2V9KoaQDgRTzMIRvt4aBG7bOu+iQAdM= \
@@ -29,3 +41,6 @@ kubectl run docker-laravel-mysql-kubectl \
   --env=MYSQL_ROOT_PASSWORD=root \
   --env=MYSQL_ALLOW_EMPTY_PASSWORD=yes \
   --env=MYSQL_RANDOM_ROOT_PASSWORD=root 
+
+kubectl expose pods docker-laravel-mysql-kubectl --type=NodePort --port=3309
+service "docker-laravel-mysql-kubectl" exposed
